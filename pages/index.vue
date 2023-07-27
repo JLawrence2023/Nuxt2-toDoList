@@ -132,7 +132,7 @@ import { items } from "../data/items";
   },
 })
 export default class Index extends Vue {
-  title = "";
+  title: string = "";
   tags: string[] = [];
   selectedTags: string[] = [];
   allListNumbers: number[] = [];

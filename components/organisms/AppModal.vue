@@ -97,12 +97,12 @@ import ButtonAddTag from "../atoms/ButtonAddTag.vue";
   },
 })
 export default class AppModal extends Vue {
-  title = "";
+  title: string = "";
   selectedTags: string[] = [];
-  isOpen = false;
-  dropdownOpen = false;
+  isOpen: boolean = false;
+  dropdownOpen: boolean = false;
   tags: string[] = ["tag1", "tag2", "tag3"];
-  newTag = "";
+  newTag: string = "";
 
   get isInputEmptyAndNoTagsSelected(): boolean {
     return this.title.trim() === "" || this.selectedTags.length === 0;
@@ -315,19 +315,19 @@ export default class AppModal extends Vue {
   font-weight: 400;
   padding-left: 10px;
 }
-// .enter-new-tag {
-//   background-color: #393939;
-//   color: white;
-//   width: 45px;
-//   height: 25px;
-//   display: flex;
-//   text-align: center;
-//   font-size: 14px;
-//   font-style: normal;
-//   font-weight: 400;
-//   line-height: normal;
-//   justify-content: center;
-// }
+.enter-new-tag {
+  background-color: #393939;
+  color: white;
+  width: 45px;
+  height: 25px;
+  display: flex;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  justify-content: center;
+}
 .select-tag-dropdown {
   max-width: 170px;
 }

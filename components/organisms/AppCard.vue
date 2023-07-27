@@ -7,7 +7,11 @@
     @drop="drop"
   >
     <div class="task-title-container">
-      <div class="task-title">{{ item.title }}</div>
+      <div class="task-title">
+        <h5>
+          {{ item.title }}
+        </h5>
+      </div>
     </div>
     <div class="new-tag-selected">
       <div class="new-tag-name" v-for="tagItem in item.tag" :key="tagItem">
@@ -17,13 +21,59 @@
   </div>
 </template>
 
+<style lang="scss">
+@import "../../assets/styles/main.scss";
+@import "../../assets/styles/mixins.scss";
+@import "../../assets/styles/variables.scss";
+
+.new-task-container {
+  width: 230px;
+  height: 70px;
+  border: 1px solid $border-color;
+  padding: 5px 9px 0 9px;
+  border-radius: 2px;
+  margin-bottom: 6px;
+}
+.task-title-container {
+  width: 210px;
+  height: 35px;
+  margin: auto;
+  margin-bottom: 7px;
+}
+.task-title {
+  color: $black;
+  font-family: Inter;
+}
+.new-tag-selected {
+  display: flex;
+}
+
+.new-tag-name {
+  text-align: center;
+  color: white;
+  font-size: $font-size-tag;
+  font-weight: $font-weight-card-title;
+  width: 35px;
+  height: 15px;
+  background: $yellow;
+  border-radius: 10px;
+  margin-right: 4px;
+}
+</style>
+
 <script lang="ts">
 import { Component, Prop, Vue } from "Nuxt-property-decorator";
-import { Task } from "../../interfaces/task";
+import { TaskModel } from "../../model/TaskModel";
+import { TaskInterface } from "../../interfaces/taskInterface";
 
 @Component
 export default class AppCard extends Vue {
-  @Prop({ type: Object, required: true }) item!: Task;
+  @Prop({
+    type: Object,
+    required: true,
+    default: () => new TaskModel(),
+  })
+  item!: TaskInterface;
   @Prop({ type: Boolean, required: true }) isFiltering!: boolean;
 
   get isDraggable(): boolean {
@@ -45,43 +95,4 @@ export default class AppCard extends Vue {
   }
 }
 </script>
-
-<style>
-.new-task-container {
-  width: 230px;
-  height: 70px;
-  border: 1px solid #c1c1c1;
-  padding: 5px 9px 0 9px;
-  border-radius: 2px;
-  margin-bottom: 6px;
-}
-.task-title-container {
-  width: 210px;
-  height: 35px;
-  margin: auto;
-  margin-bottom: 7px;
-}
-.task-title {
-  color: #000;
-  font-family: Inter;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-.new-tag-selected {
-  display: flex;
-}
-
-.new-tag-name {
-  text-align: center;
-  color: white;
-  font-size: 10px;
-  font-weight: 700;
-  width: 35px;
-  height: 15px;
-  background: rgb(161, 175, 47);
-  border-radius: 10px;
-  margin-right: 4px;
-}
-</style>
+../../model/TaskModel

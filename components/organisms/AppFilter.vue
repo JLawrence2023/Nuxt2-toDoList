@@ -54,11 +54,11 @@ import { Component, Prop, Vue } from "Nuxt-property-decorator";
 export default class AppFilter extends Vue {
   @Prop({ type: Array, required: true }) allTags!: string[];
 
-  dropdownOpen = false;
+  dropdownOpen: boolean = false;
   selectedItem: string | null = null;
   selectedTags: string[] = [];
-  searchText = "";
-  isFiltering = false;
+  searchText: string = "";
+  isFiltering: boolean = false;
 
   get filteredTags(): string[] {
     return this.allTags.filter((tag) =>
