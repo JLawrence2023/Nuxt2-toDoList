@@ -114,6 +114,7 @@ export default class AppFilter extends Vue {
 .choose-tag label {
   margin-top: 5px;
   margin-bottom: 5px;
+  cursor: pointer;
 }
 .choose-tag input[type="checkbox"] {
   position: absolute;
@@ -133,6 +134,7 @@ export default class AppFilter extends Vue {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  cursor: pointer;
 }
 
 .arrow {
@@ -218,6 +220,7 @@ export default class AppFilter extends Vue {
   left: 0;
   right: 0;
   border: none;
+  cursor: pointer;
 }
 .unsellect-all-tag {
   margin-left: 7px;
@@ -228,6 +231,7 @@ export default class AppFilter extends Vue {
   font-weight: 400;
   border: none;
   background-color: transparent;
+  cursor: pointer;
 }
 .tag-desc {
   color: #000;

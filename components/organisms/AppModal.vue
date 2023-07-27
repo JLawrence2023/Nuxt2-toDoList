@@ -178,6 +178,7 @@ export default class AppModal extends Vue {
 .buttonAddIssue {
   border: none;
   background-color: transparent;
+  cursor: pointer;
 }
 .root {
   position: relative;
@@ -246,14 +247,9 @@ export default class AppModal extends Vue {
 .submit-button {
   background-color: #393939;
   height: 25px;
-  padding: 0 10px;
   color: #ffffff;
-  text-align: center;
   font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  display: flex;
+  border: none;
 }
 .tag {
   width: 35px;
@@ -300,6 +296,7 @@ export default class AppModal extends Vue {
   font-size: 14px;
   margin-bottom: 5px;
   display: block;
+  cursor: pointer;
 }
 .create-tag {
   display: flex;

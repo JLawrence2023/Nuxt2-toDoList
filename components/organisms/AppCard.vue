@@ -5,6 +5,7 @@
     @dragstart="startDrag"
     @dragover.prevent
     @drop="drop"
+    :style="{ cursor: isDraggable ? 'grab' : 'default' }"
   >
     <div class="task-title-container">
       <div class="task-title">
@@ -95,4 +96,3 @@ export default class AppCard extends Vue {
   }
 }
 </script>
-../../model/TaskModel

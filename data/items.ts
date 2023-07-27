@@ -44,13 +44,13 @@ export const items = [
   {
     id: 8,
     title: "Sample Task 4.2",
-    tag: ["tag1", "tag2"],
+    tag: ["tag1", "tag4"],
     list: 4,
   },
   {
     id: 9,
     title: "Sample Task 4.3",
-    tag: ["tag1", "tag2"],
+    tag: ["tag1", "tag4"],
     list: 4,
   },
 ];
