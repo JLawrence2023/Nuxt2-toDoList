@@ -2,9 +2,9 @@
   <div
     class="new-task-container"
     :draggable="isDraggable"
-    @dragstart="startDrag($event, item)"
+    @dragstart="startDrag"
     @dragover.prevent
-    @drop="drop($event, item)"
+    @drop="drop"
   >
     <div class="task-title-container">
       <div class="task-title">{{ item.title }}</div>
@@ -17,35 +17,33 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    item: Object,
-    isFiltering: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  computed: {
-    isDraggable() {
-      return !this.isFiltering;
-    },
-  },
-  methods: {
-    startDrag(event, item) {
-      event.dataTransfer.effectAllowed = "move";
-      event.dataTransfer.setData("text/plain", "");
-      event.dataTransfer.setData("itemID", item.id);
-    },
-    drop(event, item) {
-      event.preventDefault();
-      const sourceItemID = event.dataTransfer.getData("itemID");
-      if (sourceItemID !== item.id) {
-        this.$emit("reorder-tasks", sourceItemID, item.id);
-      }
-    },
-  },
-};
+<script lang="ts">
+import { Component, Prop, Vue } from "Nuxt-property-decorator";
+import { Task } from "../../interfaces/task";
+
+@Component
+export default class AppCard extends Vue {
+  @Prop({ type: Object, required: true }) item!: Task;
+  @Prop({ type: Boolean, required: true }) isFiltering!: boolean;
+
+  get isDraggable(): boolean {
+    return !this.isFiltering;
+  }
+
+  startDrag(event: DragEvent): void {
+    event.dataTransfer!.effectAllowed = "move";
+    event.dataTransfer!.setData("text/plain", "");
+    event.dataTransfer!.setData("itemID", this.item.id.toString());
+  }
+
+  drop(event: DragEvent): void {
+    event.preventDefault();
+    const sourceItemID = event.dataTransfer!.getData("itemID");
+    if (sourceItemID !== this.item.id.toString()) {
+      this.$emit("reorder-tasks", sourceItemID, this.item.id);
+    }
+  }
+}
 </script>
 
 <style>

@@ -47,80 +47,67 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    allTags: {
-      type: Array,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      dropdownOpen: false,
-      selectedItem: null,
-      selectedTags: [],
-      searchText: "",
-      isFiltering: false,
-    };
-  },
+<script lang="ts">
+import { Component, Prop, Vue } from "Nuxt-property-decorator";
 
-  computed: {
-    filteredTags() {
-      // Use computed property to filter the tags based on the search input
-      return this.allTags.filter((tag) =>
-        tag.toLowerCase().includes(this.searchText.toLowerCase())
-      );
-    },
-  },
-  methods: {
-    handleTagSelection() {
-      // Close the dropdown after a tag is selected or unselected
-      this.dropdownOpen = true;
+@Component
+export default class AppFilter extends Vue {
+  @Prop({ type: Array, required: true }) allTags!: string[];
 
-      // Update the selectedItem to display selected tags in the dropdown
-      if (this.selectedTags.length > 0) {
-        this.selectedItem = this.selectedTags.join(", ");
-      } else {
-        this.selectedItem = null;
-      }
-    },
+  dropdownOpen = false;
+  selectedItem: string | null = null;
+  selectedTags: string[] = [];
+  searchText = "";
+  isFiltering = false;
 
-    toggleDropdown() {
-      this.dropdownOpen = !this.dropdownOpen;
-    },
-    handleNarrowDown() {
-      // Log the selected tags in the console
-      this.$emit("tag-selected", this.selectedTags);
-      this.isFiltering = true;
-    },
-    selectTag(tag) {
-      if (this.selectedTags.includes(tag)) {
-        // If the tag is already selected, remove it from the selectedTags array
-        this.selectedTags = this.selectedTags.filter(
-          (selectedTag) => selectedTag !== tag
-        );
-      } else {
-        // If the tag is not selected, add it to the selectedTags array
-        this.selectedTags.push(tag);
-      }
+  get filteredTags(): string[] {
+    return this.allTags.filter((tag) =>
+      tag.toLowerCase().includes(this.searchText.toLowerCase())
+    );
+  }
 
-      // Update the selectedItem to display selected tags in the dropdown
-      if (this.selectedTags.length > 0) {
-        this.selectedItem = this.selectedTags.join(", ");
-      } else {
-        this.selectedItem = null;
-      }
-      this.isFiltering = true;
-    },
-    unselectAllTags() {
-      // Clear the selectedTags array to unselect all tags
-      this.selectedTags = [];
+  handleTagSelection(): void {
+    this.dropdownOpen = true;
+
+    if (this.selectedTags.length > 0) {
+      this.selectedItem = this.selectedTags.join(", ");
+    } else {
       this.selectedItem = null;
-      this.isFiltering = false;
-    },
-  },
-};
+    }
+  }
+
+  toggleDropdown(): void {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  handleNarrowDown(): void {
+    this.$emit("tag-selected", this.selectedTags);
+    this.isFiltering = true;
+  }
+
+  selectTag(tag: string): void {
+    if (this.selectedTags.includes(tag)) {
+      this.selectedTags = this.selectedTags.filter(
+        (selectedTag) => selectedTag !== tag
+      );
+    } else {
+      this.selectedTags.push(tag);
+    }
+
+    if (this.selectedTags.length > 0) {
+      this.selectedItem = this.selectedTags.join(", ");
+    } else {
+      this.selectedItem = null;
+    }
+    this.isFiltering = true;
+  }
+
+  unselectAllTags(): void {
+    this.selectedTags = [];
+    this.selectedItem = null;
+    this.isFiltering = false;
+  }
+}
 </script>
 
 <style>

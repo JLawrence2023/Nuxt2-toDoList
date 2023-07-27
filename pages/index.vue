@@ -115,219 +115,161 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from "Nuxt-property-decorator";
 import AppFilter from "../components/organisms/AppFilter.vue";
 import AppCard from "../components/organisms/AppCard.vue";
 import AppModal from "../components/organisms/AppModal.vue";
-// import { column1 } from "../utils/constants";
-// import { column2 } from "../utils/constants";
-// import { column3 } from "../utils/constants";
-// import { column4 } from "../utils/constants";
 import { customSort } from "../utils/constants";
-export default {
-  data() {
-    return {
-      title: "", // Initialize the title data property
-      tags: ["tag1", "tag2", "tag3", "tag4"], // Replace with your actual tags array
-      selectedTags: [], // Initialize the selectedTags data property as an array
-      allListNumbers: [], // Initialize allListNumbers data property as an array
-      allTags: [],
-      isFiltering: false,
-      items: [
-        {
-          id: 1,
-          title: "Sample Task 1",
-          tag: ["tag1", "tag2"],
-          list: 1,
-        },
-        {
-          id: 2,
-          title: "Sample Task 2.1",
-          tag: ["tag1", "tag3"],
-          list: 2,
-        },
-        {
-          id: 3,
-          title: "Sample Task 2.2",
-          tag: ["tag2"],
-          list: 2,
-        },
-        {
-          id: 4,
-          title: "Sample Task 3",
-          tag: ["tag3"],
-          list: 3,
-        },
-        {
-          id: 5,
-          title: "Sample Task 4.1",
-          tag: ["tag4"],
-          list: 4,
-        },
-        {
-          id: 6,
-          title: "Sample Task 4.2",
-          tag: ["tag4"],
-          list: 4,
-        },
-        {
-          id: 7,
-          title: "Sample Task 4.2",
-          tag: ["tag5"],
-          list: 4,
-        },
-        {
-          id: 8,
-          title: "Sample Task 4.2",
-          tag: ["tag6"],
-          list: 4,
-        },
-      ],
-    };
-  },
+import { Item } from "../interfaces/item";
+import { items } from "../data/items";
 
-  methods: {
-    reorderTasks(sourceItemID, targetItemID) {
-      const sourceIndex = this.items.findIndex(
-        (item) => item.id === Number(sourceItemID)
-      );
-      const targetIndex = this.items.findIndex(
-        (item) => item.id === Number(targetItemID)
-      );
-
-      if (sourceIndex !== -1 && targetIndex !== -1) {
-        this.items.splice(targetIndex, 0, this.items.splice(sourceIndex, 1)[0]);
-      }
-    },
-    updateAllListNumbers() {
-      this.allListNumbers = this.items.map((item) => item.list);
-      this.allListNumbers.sort((a, b) => a - b);
-    },
-    createdTask1(params) {
-      // Handle the emitted event from Modal.vue and add the task to items
-      this.items.push({
-        id: this.items.length + 1,
-        title: params.taskTitle,
-        tag: params.selectedTags, // Store selected tags as an array
-        list: 1, // Replace with the appropriate list ID
-      });
-      this.getAllTags();
-      this.updateAllListNumbers();
-    },
-    createdTask2(params) {
-      // Handle the emitted event from Modal.vue and add the task to items
-      this.items.push({
-        id: this.items.length + 1,
-        title: params.taskTitle,
-        tag: params.selectedTags, // Store selected tags as an array
-        list: 2, // Replace with the appropriate list ID
-      });
-      this.getAllTags();
-      this.updateAllListNumbers();
-    },
-    createdTask3(params) {
-      // Handle the emitted event from Modal.vue and add the task to items
-      this.items.push({
-        id: this.items.length + 1,
-        title: params.taskTitle,
-        tag: params.selectedTags, // Store selected tags as an array
-        list: 3, // Replace with the appropriate list ID
-      });
-      this.getAllTags();
-      this.updateAllListNumbers();
-    },
-    createdTask4(params) {
-      // Handle the emitted event from Modal.vue and add the task to items
-      this.items.push({
-        id: this.items.length + 1,
-        title: params.taskTitle,
-        tag: params.selectedTags, // Store selected tags as an array
-        list: 4, // Replace with the appropriate list ID
-      });
-      this.getAllTags();
-      this.updateAllListNumbers();
-    },
-
-    getList(list) {
-      // Filter the items based on the selected tags and list number
-      return this.items.filter(
-        (item) =>
-          item.list === list &&
-          (this.selectedTags.length === 0 ||
-            this.selectedTags.every((tag) => item.tag.includes(tag)))
-      );
-    },
-
-    startDrag(event, item) {
-      console.log(item);
-      event.dataTransfer.dropEffect = "move";
-      event.dataTransfer.effectAllowed = "move";
-      event.dataTransfer.setData("itemID", item.id);
-    },
-    onDrop(event, list) {
-      const itemID = event.dataTransfer.getData("itemID");
-      const item = this.items.find((item) => item.id === Number(itemID));
-      item.list = list;
-    },
-    dragOver(event, item) {
-      if (this.isFiltering) {
-        event.preventDefault(item); // Prevent dropping while filtering
-      }
-    },
-
-    submitModal() {
-      // Push the new task into the items array
-      this.items.push({
-        id: this.items.length + 1,
-        title: this.title,
-        tag: this.selectedTags, // Store the selected tags
-        list: 1, // Replace with the appropriate list ID
-      });
-
-      // Reset the input and selected tags after submission
-      this.title = "";
-      this.selectedTags = [];
-    },
-    getBadgeNumber(list) {
-      const itemsList = this.getList(list);
-      return itemsList.length;
-    },
-    onTagSelected(selectedTags) {
-      // Handle the selected tags here
-
-      this.isFiltering = selectedTags.length > 0;
-      this.selectedTags = selectedTags;
-    },
-    // onTagSelected(tag) {
-    //   // Do something with the selected tag
-    //   console.log(`Selected Tag: ${tag}`);
-    // },
-    getAllTags() {
-      const uniqueTags = {};
-
-      for (const item of this.items) {
-        for (const tag of item.tag) {
-          uniqueTags[tag] = true;
-        }
-      }
-
-      this.allTags = customSort(Object.keys(uniqueTags));
-    },
-
-    // ... your other methods
-  },
-  created() {
-    // Call the method to log the sorted tags and list numbers when the component is created
-    this.getAllTags();
-    // console.log("All Items:", this.items);
-  },
-
+@Component({
   components: {
     AppFilter,
     AppCard,
     AppModal,
   },
-};
+})
+export default class Index extends Vue {
+  title = "";
+  tags: string[] = [];
+  selectedTags: string[] = [];
+  allListNumbers: number[] = [];
+  allTags: string[] = [];
+  isFiltering = false;
+  items: Item[] = items;
+
+  reorderTasks(sourceItemID: string, targetItemID: string): void {
+    const sourceIndex = this.items.findIndex(
+      (item) => item.id === Number(sourceItemID)
+    );
+    const targetIndex = this.items.findIndex(
+      (item) => item.id === Number(targetItemID)
+    );
+
+    if (sourceIndex !== -1 && targetIndex !== -1) {
+      this.items.splice(targetIndex, 0, this.items.splice(sourceIndex, 1)[0]);
+    }
+  }
+
+  updateAllListNumbers(): void {
+    this.allListNumbers = this.items.map((item) => item.list);
+    this.allListNumbers.sort((a, b) => a - b);
+  }
+
+  createdTask1(params: { taskTitle: string; selectedTags: string[] }): void {
+    this.items.push({
+      id: this.items.length + 1,
+      title: params.taskTitle,
+      tag: params.selectedTags,
+      list: 1,
+    });
+    this.getAllTags();
+    this.updateAllListNumbers();
+  }
+
+  createdTask2(params: { taskTitle: string; selectedTags: string[] }): void {
+    this.items.push({
+      id: this.items.length + 1,
+      title: params.taskTitle,
+      tag: params.selectedTags,
+      list: 2,
+    });
+    this.getAllTags();
+    this.updateAllListNumbers();
+  }
+
+  createdTask3(params: { taskTitle: string; selectedTags: string[] }): void {
+    this.items.push({
+      id: this.items.length + 1,
+      title: params.taskTitle,
+      tag: params.selectedTags,
+      list: 3,
+    });
+    this.getAllTags();
+    this.updateAllListNumbers();
+  }
+
+  createdTask4(params: { taskTitle: string; selectedTags: string[] }): void {
+    this.items.push({
+      id: this.items.length + 1,
+      title: params.taskTitle,
+      tag: params.selectedTags,
+      list: 4,
+    });
+    this.getAllTags();
+    this.updateAllListNumbers();
+  }
+
+  getList(list: number): Item[] {
+    return this.items.filter(
+      (item) =>
+        item.list === list &&
+        (this.selectedTags.length === 0 ||
+          this.selectedTags.every((tag) => item.tag.includes(tag)))
+    );
+  }
+
+  startDrag(event: DragEvent, item: Item): void {
+    console.log(item);
+    event.dataTransfer!.dropEffect = "move";
+    event.dataTransfer!.effectAllowed = "move";
+    event.dataTransfer!.setData("itemID", item.id.toString());
+  }
+
+  onDrop(event: DragEvent, list: number): void {
+    const itemID = event.dataTransfer!.getData("itemID");
+    const item = this.items.find((item) => item.id === Number(itemID));
+    if (item) {
+      item.list = list;
+    }
+  }
+
+  dragOver(event: DragEvent, item: Item): void {
+    if (this.isFiltering) {
+      event.preventDefault();
+    }
+  }
+
+  submitModal(): void {
+    this.items.push({
+      id: this.items.length + 1,
+      title: this.title,
+      tag: this.selectedTags,
+      list: 1,
+    });
+
+    this.title = "";
+    this.selectedTags = [];
+  }
+
+  getBadgeNumber(list: number): number {
+    const itemsList = this.getList(list);
+    return itemsList.length;
+  }
+
+  onTagSelected(selectedTags: string[]): void {
+    this.isFiltering = selectedTags.length > 0;
+    this.selectedTags = selectedTags;
+  }
+
+  getAllTags(): void {
+    const uniqueTags: { [key: string]: boolean } = {};
+
+    for (const item of this.items) {
+      for (const tag of item.tag) {
+        uniqueTags[tag] = true;
+      }
+    }
+
+    this.allTags = customSort(Object.keys(uniqueTags));
+  }
+
+  created(): void {
+    this.getAllTags();
+  }
+}
 </script>
 
 <style scoped></style>

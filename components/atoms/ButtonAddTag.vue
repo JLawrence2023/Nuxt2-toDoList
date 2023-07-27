@@ -6,7 +6,12 @@
   </div>
 </template>
 
-<script></script>
+<script lang="ts">
+import { Component, Vue } from "Nuxt-property-decorator";
+
+@Component
+export default class ButtonAddTag extends Vue {}
+</script>
 
 <style lang="scss">
 @import "../../assets/styles/main.scss";

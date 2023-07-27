@@ -54,17 +54,19 @@
                   v-model="newTag"
                   @keydown.enter="addNewTag"
                 />
-                <ButtonAddTag
-                  @click="addNewTag"
-                  :disabled="isTagAlreadyInList"
-                />
-                <!-- <button
+                <!-- <div class="enter-new-tag">
+                  <ButtonAddTag
+                    @click="addNewTag"
+                    :disabled="isTagAlreadyInList"
+                  />
+                </div> -->
+                <button
                   class="enter-new-tag"
                   @click="addNewTag"
                   :disabled="isTagAlreadyInList"
                 >
                   作成
-                </button> -->
+                </button>
               </div>
             </div>
           </div>
@@ -85,83 +87,87 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from "Nuxt-property-decorator";
 import ButtonAddTag from "../atoms/ButtonAddTag.vue";
-export default {
-  data() {
-    return {
-      title: "", // Add title data property
-      selectedTags: [], // Add selectedTags data property
-      isOpen: false,
-      dropdownOpen: false,
-      tags: ["tag1", "tag2", "tag3"], // Replace with your actual tags array
-      newTag: "",
-    };
-  },
-  computed: {
-    isInputEmptyAndNoTagsSelected() {
-      return this.title.trim() === "" || this.selectedTags.length === 0;
-    },
-    isTagAlreadyInList() {
-      return this.tags.includes(this.newTag);
-    },
-  },
-  methods: {
-    submitModal() {
-      // Check if both input and tags are empty before submitting
-      if (this.isInputEmptyAndNoTagsSelected) return;
 
-      this.$emit("created-task", {
-        taskTitle: this.title,
-        selectedTags: this.selectedTags,
-      });
-      // Clear the input and selected tags after submission
-      this.title = "";
-      this.selectedTags = [];
-      this.closeModal(); // Close the modal after submission
-    },
-    handleModalClick(event) {
-      if (event.target.classList.contains("modal")) {
-        this.closeModal();
-      }
-    },
-    closeModal() {
-      this.isOpen = false;
-    },
-    toggleDropdown() {
-      this.dropdownOpen = !this.dropdownOpen;
-    },
-    addNewTag() {
-      if (this.newTag.trim() !== "" && !this.isTagAlreadyInList) {
-        this.tags.push(this.newTag);
-        this.newTag = "";
-      }
-    },
-
-    toggleTag(tag) {
-      const index = this.selectedTags.indexOf(tag);
-      if (index === -1) {
-        this.selectedTags.push(tag);
-      } else {
-        this.selectedTags.splice(index, 1);
-      }
-    },
-    onEscKeyDown(event) {
-      if (event.key === "Escape") {
-        this.closeModal();
-      }
-    },
-  },
-  mounted() {
-    window.addEventListener("keydown", this.onEscKeyDown);
-  },
-  beforeUnmount() {
-    window.removeEventListener("keydown", this.onEscKeyDown);
-  },
+@Component({
   components: {
     ButtonAddTag,
   },
-};
+})
+export default class AppModal extends Vue {
+  title = "";
+  selectedTags: string[] = [];
+  isOpen = false;
+  dropdownOpen = false;
+  tags: string[] = ["tag1", "tag2", "tag3"];
+  newTag = "";
+
+  get isInputEmptyAndNoTagsSelected(): boolean {
+    return this.title.trim() === "" || this.selectedTags.length === 0;
+  }
+
+  get isTagAlreadyInList(): boolean {
+    return this.tags.includes(this.newTag);
+  }
+
+  submitModal(): void {
+    if (this.isInputEmptyAndNoTagsSelected) return;
+
+    this.$emit("created-task", {
+      taskTitle: this.title,
+      selectedTags: this.selectedTags,
+    });
+    this.title = "";
+    this.selectedTags = [];
+    this.closeModal();
+  }
+
+  handleModalClick(event: MouseEvent): void {
+    if ((event.target as Element).classList.contains("modal")) {
+      this.closeModal();
+    }
+  }
+
+  closeModal(): void {
+    this.isOpen = false;
+  }
+
+  toggleDropdown(): void {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  addNewTag(): void {
+    if (this.newTag.trim() !== "" && !this.isTagAlreadyInList) {
+      this.tags.push(this.newTag);
+      this.newTag = "";
+    }
+  }
+
+  toggleTag(tag: string): void {
+    const index = this.selectedTags.indexOf(tag);
+    if (index === -1) {
+      this.selectedTags.push(tag);
+    } else {
+      this.selectedTags.splice(index, 1);
+    }
+  }
+
+  onEscKeyDown(event: KeyboardEvent): void {
+    if (event.key === "Escape") {
+      this.closeModal();
+    }
+  }
+
+  mounted(): void {
+    window.addEventListener("keydown", this.onEscKeyDown);
+  }
+
+  beforeUnmount(): void {
+    window.removeEventListener("keydown", this.onEscKeyDown);
+  }
+}
 </script>
 
 <style lang="scss">
