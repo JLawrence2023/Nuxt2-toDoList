@@ -356,10 +356,6 @@ export default class Index extends Vue {
   overflow-x: auto;
   white-space: nowrap;
 }
-.inner-container {
-  margin: 41px;
-  margin-top: 58px;
-}
 .content {
   display: inline-block;
 }
@@ -367,5 +363,9 @@ export default class Index extends Vue {
   display: flex;
   align-items: center;
   width: 100%;
+}
+.inner-container {
+  padding: 41px;
+  padding-top: 58px;
 }
 </style>
