@@ -272,4 +272,100 @@ export default class Index extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.todo {
+  margin-right: 40px;
+}
+
+.assignment-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 11px;
+}
+.text-title {
+  height: 25px;
+  color: black;
+  font-size: 16px;
+  margin-left: 7px;
+  font-weight: 700;
+  word-wrap: break-word;
+  margin-right: 8px;
+}
+.badge-number {
+  width: 34px;
+  height: 21px;
+  text-align: center;
+  color: black;
+  font-size: 14px;
+  font-family: Inter;
+  font-weight: 700;
+  word-wrap: break-word;
+  background-color: #d9d9d9;
+  border-radius: 15px;
+}
+
+.assignment-text {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.plus {
+  display: flex;
+  width: 13px;
+  height: 12px;
+  margin-left: 3px;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #808080;
+  text-align: center;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-right: 5px;
+}
+.add-issue {
+  display: flex;
+  width: 70px;
+  height: 20px;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #02836b;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.rectangle {
+  width: 100%;
+  height: 574px;
+  background: white;
+  border-radius: 3px;
+  padding: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-width: 250px;
+  white-space: nowrap;
+}
+.container {
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.inner-container {
+  margin: 41px;
+  margin-top: 58px;
+}
+.content {
+  display: inline-block;
+}
+.task-list {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+</style>

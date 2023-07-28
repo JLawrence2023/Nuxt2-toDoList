@@ -54,12 +54,6 @@
                   v-model="newTag"
                   @keydown.enter="addNewTag"
                 />
-                <!-- <div class="enter-new-tag">
-                  <ButtonAddTag
-                    @click="addNewTag"
-                    :disabled="isTagAlreadyInList"
-                  />
-                </div> -->
                 <button
                   class="enter-new-tag"
                   @click="addNewTag"
@@ -89,12 +83,9 @@
 
 <script lang="ts">
 import { Component, Vue } from "Nuxt-property-decorator";
-import ButtonAddTag from "../atoms/ButtonAddTag.vue";
 
 @Component({
-  components: {
-    ButtonAddTag,
-  },
+  components: {},
 })
 export default class AppModal extends Vue {
   title: string = "";
@@ -182,6 +173,10 @@ export default class AppModal extends Vue {
 }
 .root {
   position: relative;
+}
+.assignment-text {
+  display: flex;
+  margin-bottom: 10px;
 }
 .modal {
   @include modal-center-position;
@@ -324,6 +319,7 @@ export default class AppModal extends Vue {
   font-weight: 400;
   line-height: normal;
   justify-content: center;
+  border: none;
 }
 .select-tag-dropdown {
   max-width: 170px;

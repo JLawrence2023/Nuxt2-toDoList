@@ -37,4 +37,10 @@ export default defineComponent({
   width: 202px;
   height: 70px;
 }
+.navbar-text {
+  @include font-navbar;
+  text-align: center;
+  text-decoration: none;
+  color: $black;
+}
 </style>
