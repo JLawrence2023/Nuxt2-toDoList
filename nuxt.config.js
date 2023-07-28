@@ -47,6 +47,11 @@ export default {
     src: "nuxt.config.js",
     use: "@nuxtjs/vercel-builder",
     config: {},
+    output: {
+      path: path.resolve(__dirname, "dist"), // The output directory path
+      filename: "[name].js", // Use the name of the entry point JavaScript file
+      chunkFilename: "[name].js", // Use the name of the chunk (split code) file
+    },
   },
   target: "static",
 };
