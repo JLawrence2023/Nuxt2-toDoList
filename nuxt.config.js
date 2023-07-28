@@ -48,4 +48,5 @@ export default {
     use: "@nuxtjs/vercel-builder",
     config: {},
   },
+  target: "static",
 };
