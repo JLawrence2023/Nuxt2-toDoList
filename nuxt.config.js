@@ -36,7 +36,9 @@ export default {
   build: {
     src: "nuxt.config.js",
     use: "@nuxtjs/vercel-builder",
-    config: {},
+    config: {
+      outputDir: "dist",
+    },
   },
   target: "static",
 };
