@@ -63,7 +63,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "Nuxt-property-decorator";
+import { Component, Prop, Vue } from "nuxt-property-decorator";
 import { TaskModel } from "../../model/TaskModel";
 import { TaskInterface } from "../../interfaces/taskInterface";
 

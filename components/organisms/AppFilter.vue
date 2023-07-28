@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "Nuxt-property-decorator";
+import { Component, Prop, Vue } from "nuxt-property-decorator";
 
 @Component
 export default class AppFilter extends Vue {

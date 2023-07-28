@@ -116,7 +116,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "Nuxt-property-decorator";
+import { Component, Vue } from "nuxt-property-decorator";
 import AppFilter from "../components/organisms/AppFilter.vue";
 import AppCard from "../components/organisms/AppCard.vue";
 import AppModal from "../components/organisms/AppModal.vue";
