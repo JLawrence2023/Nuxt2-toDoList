@@ -34,4 +34,6 @@ export default {
   modules: [],
 
   build: {},
+
+  target: "static",
 };
