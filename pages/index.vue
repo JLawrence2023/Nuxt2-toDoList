@@ -137,8 +137,8 @@ import AppFilter from "../components/organisms/AppFilter.vue";
 import AppCard from "../components/organisms/AppCard.vue";
 import AppModal from "../components/organisms/AppModal.vue";
 import { customSort } from "../utils/constants";
-import { Item } from "../interfaces/item";
-import { items } from "../data/items";
+import { Item } from "../interfaces/itemInterface";
+import { itemsData } from "../data/itemsData";
 
 @Component({
   components: {
@@ -154,29 +154,33 @@ export default class Index extends Vue {
   allListNumbers: number[] = [];
   allTags: string[] = [];
   isFiltering = false;
-  items: Item[] = items;
+  itemsData: Item[] = itemsData;
 
   reorderTasks(sourceItemID: string, targetItemID: string): void {
-    const sourceIndex = this.items.findIndex(
+    const sourceIndex = this.itemsData.findIndex(
       (item) => item.id === Number(sourceItemID)
     );
-    const targetIndex = this.items.findIndex(
+    const targetIndex = this.itemsData.findIndex(
       (item) => item.id === Number(targetItemID)
     );
 
     if (sourceIndex !== -1 && targetIndex !== -1) {
-      this.items.splice(targetIndex, 0, this.items.splice(sourceIndex, 1)[0]);
+      this.itemsData.splice(
+        targetIndex,
+        0,
+        this.itemsData.splice(sourceIndex, 1)[0]
+      );
     }
   }
 
   updateAllListNumbers(): void {
-    this.allListNumbers = this.items.map((item) => item.list);
+    this.allListNumbers = this.itemsData.map((item) => item.list);
     this.allListNumbers.sort((a, b) => a - b);
   }
 
   createdTask1(params: { taskTitle: string; selectedTags: string[] }): void {
-    this.items.push({
-      id: this.items.length + 1,
+    this.itemsData.push({
+      id: this.itemsData.length + 1,
       title: params.taskTitle,
       tag: params.selectedTags,
       list: 1,
@@ -186,8 +190,8 @@ export default class Index extends Vue {
   }
 
   createdTask2(params: { taskTitle: string; selectedTags: string[] }): void {
-    this.items.push({
-      id: this.items.length + 1,
+    this.itemsData.push({
+      id: this.itemsData.length + 1,
       title: params.taskTitle,
       tag: params.selectedTags,
       list: 2,
@@ -197,8 +201,8 @@ export default class Index extends Vue {
   }
 
   createdTask3(params: { taskTitle: string; selectedTags: string[] }): void {
-    this.items.push({
-      id: this.items.length + 1,
+    this.itemsData.push({
+      id: this.itemsData.length + 1,
       title: params.taskTitle,
       tag: params.selectedTags,
       list: 3,
@@ -208,8 +212,8 @@ export default class Index extends Vue {
   }
 
   createdTask4(params: { taskTitle: string; selectedTags: string[] }): void {
-    this.items.push({
-      id: this.items.length + 1,
+    this.itemsData.push({
+      id: this.itemsData.length + 1,
       title: params.taskTitle,
       tag: params.selectedTags,
       list: 4,
@@ -219,7 +223,7 @@ export default class Index extends Vue {
   }
 
   getList(list: number): Item[] {
-    return this.items.filter(
+    return this.itemsData.filter(
       (item) =>
         item.list === list &&
         (this.selectedTags.length === 0 ||
@@ -236,7 +240,7 @@ export default class Index extends Vue {
 
   onDrop(event: DragEvent, list: number): void {
     const itemID = event.dataTransfer!.getData("itemID");
-    const item = this.items.find((item) => item.id === Number(itemID));
+    const item = this.itemsData.find((item) => item.id === Number(itemID));
     if (item) {
       item.list = list;
     }
@@ -249,8 +253,8 @@ export default class Index extends Vue {
   }
 
   submitModal(): void {
-    this.items.push({
-      id: this.items.length + 1,
+    this.itemsData.push({
+      id: this.itemsData.length + 1,
       title: this.title,
       tag: this.selectedTags,
       list: 1,
@@ -261,8 +265,8 @@ export default class Index extends Vue {
   }
 
   getBadgeNumber(list: number): number {
-    const itemsList = this.getList(list);
-    return itemsList.length;
+    const itemsDataList = this.getList(list);
+    return itemsDataList.length;
   }
 
   onTagSelected(selectedTags: string[]): void {
@@ -273,7 +277,7 @@ export default class Index extends Vue {
   getAllTags(): void {
     const uniqueTags: { [key: string]: boolean } = {};
 
-    for (const item of this.items) {
+    for (const item of this.itemsData) {
       for (const tag of item.tag) {
         uniqueTags[tag] = true;
       }
@@ -385,3 +389,4 @@ export default class Index extends Vue {
   padding-top: 58px;
 }
 </style>
+../interfaces/itemInterface ../data/itemsDataData
