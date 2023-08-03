@@ -114,6 +114,12 @@ export default class AppModal extends Vue {
     this.selectedTags = [];
     this.closeModal();
   }
+  closeModal() {
+    this.title = "";
+    this.selectedTags = [];
+    this.dropdownOpen = false;
+    this.isOpen = false;
+  }
 
   handleModalClick(event: MouseEvent): void {
     if ((event.target as Element).classList.contains("modal")) {
@@ -121,8 +127,10 @@ export default class AppModal extends Vue {
     }
   }
 
-  closeModal(): void {
-    this.isOpen = false;
+  onEscKeyDown(event: KeyboardEvent): void {
+    if (event.key === "Escape") {
+      this.closeModal();
+    }
   }
 
   toggleDropdown(): void {
@@ -142,12 +150,6 @@ export default class AppModal extends Vue {
       this.selectedTags.push(tag);
     } else {
       this.selectedTags.splice(index, 1);
-    }
-  }
-
-  onEscKeyDown(event: KeyboardEvent): void {
-    if (event.key === "Escape") {
-      this.closeModal();
     }
   }
 

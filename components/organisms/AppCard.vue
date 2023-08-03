@@ -22,6 +22,41 @@
   </div>
 </template>
 
+<script lang="ts">
+import { Component, Prop, Vue } from "nuxt-property-decorator";
+import { TaskModel } from "../../model/TaskModel";
+import { TaskInterface } from "../../interfaces/taskInterface";
+
+@Component
+export default class AppCard extends Vue {
+  @Prop({
+    type: Object,
+    required: true,
+    default: () => new TaskModel(),
+  })
+  item!: TaskInterface;
+  @Prop({ type: Boolean, required: true }) isFiltering!: boolean;
+
+  get isDraggable(): boolean {
+    return !this.isFiltering;
+  }
+
+  startDrag(event: DragEvent): void {
+    event.dataTransfer!.effectAllowed = "move";
+    event.dataTransfer!.setData("text/plain", "");
+    event.dataTransfer!.setData("itemID", this.item.id.toString());
+  }
+
+  drop(event: DragEvent): void {
+    event.preventDefault();
+    const sourceItemID = event.dataTransfer!.getData("itemID");
+    if (sourceItemID !== this.item.id.toString()) {
+      this.$emit("reorder-tasks", sourceItemID, this.item.id);
+    }
+  }
+}
+</script>
+
 <style lang="scss">
 @import "../../assets/styles/main.scss";
 @import "../../assets/styles/mixins.scss";
@@ -61,38 +96,3 @@
   margin-right: 4px;
 }
 </style>
-
-<script lang="ts">
-import { Component, Prop, Vue } from "nuxt-property-decorator";
-import { TaskModel } from "../../model/TaskModel";
-import { TaskInterface } from "../../interfaces/taskInterface";
-
-@Component
-export default class AppCard extends Vue {
-  @Prop({
-    type: Object,
-    required: true,
-    default: () => new TaskModel(),
-  })
-  item!: TaskInterface;
-  @Prop({ type: Boolean, required: true }) isFiltering!: boolean;
-
-  get isDraggable(): boolean {
-    return !this.isFiltering;
-  }
-
-  startDrag(event: DragEvent): void {
-    event.dataTransfer!.effectAllowed = "move";
-    event.dataTransfer!.setData("text/plain", "");
-    event.dataTransfer!.setData("itemID", this.item.id.toString());
-  }
-
-  drop(event: DragEvent): void {
-    event.preventDefault();
-    const sourceItemID = event.dataTransfer!.getData("itemID");
-    if (sourceItemID !== this.item.id.toString()) {
-      this.$emit("reorder-tasks", sourceItemID, this.item.id);
-    }
-  }
-}
-</script>
