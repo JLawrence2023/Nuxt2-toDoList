@@ -20,7 +20,11 @@
               @dragenter.prevent
               @dragover.prevent
             >
-              <AppModal @created-task="createdTask1" :tag="tags" />
+              <AppModal
+                @created-task="createdTask1"
+                :tag="tags"
+                :all-tags="allTags"
+              />
               <div v-for="item in getList(1)" :key="item.id">
                 <AppCard
                   :item="item"
@@ -46,7 +50,11 @@
               @dragenter.prevent
               @dragover.prevent
             >
-              <AppModal @created-task="createdTask2" :tag="tags" />
+              <AppModal
+                @created-task="createdTask2"
+                :tag="tags"
+                :all-tags="allTags"
+              />
               <div v-for="item in getList(2)" :key="item.id">
                 <AppCard
                   :item="item"
@@ -71,7 +79,11 @@
               @dragenter.prevent
               @dragover.prevent
             >
-              <AppModal @created-task="createdTask3" :tag="tags" />
+              <AppModal
+                @created-task="createdTask3"
+                :tag="tags"
+                :all-tags="allTags"
+              />
 
               <div v-for="item in getList(3)" :key="item.id">
                 <AppCard
@@ -96,7 +108,11 @@
               @dragenter.prevent
               @dragover.prevent
             >
-              <AppModal @created-task="createdTask4" :tag="tags" />
+              <AppModal
+                @created-task="createdTask4"
+                :tag="tags"
+                :all-tags="allTags"
+              />
 
               <div v-for="item in getList(4)" :key="item.id">
                 <AppCard

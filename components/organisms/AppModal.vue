@@ -24,7 +24,7 @@
             <div class="selected-tag">
               <div
                 class="tag"
-                v-for="tag in tags"
+                v-for="tag in allTags"
                 :key="tag"
                 v-show="selectedTags.includes(tag)"
               >
@@ -39,7 +39,7 @@
                 </div>
                 <span
                   class="taglist-list-option"
-                  v-for="tag in tags"
+                  v-for="tag in allTags"
                   :key="tag"
                   @click="toggleTag(tag)"
                 >
@@ -82,17 +82,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "nuxt-property-decorator";
+import { Component, Prop, Vue } from "nuxt-property-decorator";
 
-@Component({
-  components: {},
-})
+@Component({})
 export default class AppModal extends Vue {
+  @Prop(Array) allTags!: string[];
+
   title: string = "";
-  selectedTags: string[] = [];
   isOpen: boolean = false;
   dropdownOpen: boolean = false;
-  tags: string[] = ["tag1", "tag2", "tag3"];
+  tags: string[] = [];
+  selectedTags: string[] = [];
   newTag: string = "";
 
   get isInputEmptyAndNoTagsSelected(): boolean {
@@ -100,7 +100,7 @@ export default class AppModal extends Vue {
   }
 
   get isTagAlreadyInList(): boolean {
-    return this.tags.includes(this.newTag);
+    return this.allTags.includes(this.newTag);
   }
 
   submitModal(): void {
@@ -131,7 +131,7 @@ export default class AppModal extends Vue {
 
   addNewTag(): void {
     if (this.newTag.trim() !== "" && !this.isTagAlreadyInList) {
-      this.tags.push(this.newTag);
+      this.allTags.push(this.newTag);
       this.newTag = "";
     }
   }
