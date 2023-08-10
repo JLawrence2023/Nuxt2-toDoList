@@ -138,7 +138,8 @@ import AppCard from "../components/organisms/AppCard.vue";
 import AppModal from "../components/organisms/AppModal.vue";
 import { customSort } from "../utils/constants";
 import { Item } from "../interfaces/itemInterface";
-import { itemsData } from "../data/itemsData";
+// import { itemsData } from "../data/itemsData";
+import axios from "axios";
 
 @Component({
   components: {
@@ -154,7 +155,19 @@ export default class Index extends Vue {
   allListNumbers: number[] = [];
   allTags: string[] = [];
   isFiltering = false;
-  itemsData: Item[] = itemsData;
+  itemsData: Item[] = [];
+
+  async mounted() {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/api/tasks");
+      this.itemsData = response.data.tasks;
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
+
+    this.getAllTags();
+  }
 
   reorderTasks(sourceItemID: string, targetItemID: string): void {
     const sourceIndex = this.itemsData.findIndex(
@@ -178,48 +191,97 @@ export default class Index extends Vue {
     this.allListNumbers.sort((a, b) => a - b);
   }
 
-  createdTask1(params: { taskTitle: string; selectedTags: string[] }): void {
-    this.itemsData.push({
-      id: this.itemsData.length + 1,
-      title: params.taskTitle,
-      tag: params.selectedTags,
-      list: 1,
-    });
-    this.getAllTags();
-    this.updateAllListNumbers();
+  async createdTask1(params: {
+    taskTitle: string;
+    selectedTags: string[];
+  }): Promise<void> {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/task/store",
+        {
+          tasks: {
+            title: params.taskTitle,
+            tag: params.selectedTags,
+            list: 1,
+          },
+        }
+      );
+      const newTask = response.data;
+      this.itemsData.push(newTask);
+      this.getAllTags();
+      this.updateAllListNumbers();
+    } catch (error) {
+      console.error("Error creating task:", error);
+    }
   }
-
-  createdTask2(params: { taskTitle: string; selectedTags: string[] }): void {
-    this.itemsData.push({
-      id: this.itemsData.length + 1,
-      title: params.taskTitle,
-      tag: params.selectedTags,
-      list: 2,
-    });
-    this.getAllTags();
-    this.updateAllListNumbers();
+  async createdTask2(params: {
+    taskTitle: string;
+    selectedTags: string[];
+  }): Promise<void> {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/task/store",
+        {
+          tasks: {
+            title: params.taskTitle,
+            tag: params.selectedTags,
+            list: 2,
+          },
+        }
+      );
+      const newTask = response.data;
+      this.itemsData.push(newTask);
+      this.getAllTags();
+      this.updateAllListNumbers();
+    } catch (error) {
+      console.error("Error creating task:", error);
+    }
   }
-
-  createdTask3(params: { taskTitle: string; selectedTags: string[] }): void {
-    this.itemsData.push({
-      id: this.itemsData.length + 1,
-      title: params.taskTitle,
-      tag: params.selectedTags,
-      list: 3,
-    });
-    this.getAllTags();
-    this.updateAllListNumbers();
+  async createdTask3(params: {
+    taskTitle: string;
+    selectedTags: string[];
+  }): Promise<void> {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/task/store",
+        {
+          tasks: {
+            title: params.taskTitle,
+            tag: params.selectedTags,
+            list: 3,
+          },
+        }
+      );
+      const newTask = response.data;
+      this.itemsData.push(newTask);
+      this.getAllTags();
+      this.updateAllListNumbers();
+    } catch (error) {
+      console.error("Error creating task:", error);
+    }
   }
-
-  createdTask4(params: { taskTitle: string; selectedTags: string[] }): void {
-    this.itemsData.push({
-      id: this.itemsData.length + 1,
-      title: params.taskTitle,
-      tag: params.selectedTags,
-      list: 4,
-    });
-    this.getAllTags();
-    this.updateAllListNumbers();
+  async createdTask4(params: {
+    taskTitle: string;
+    selectedTags: string[];
+  }): Promise<void> {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/task/store",
+        {
+          tasks: {
+            title: params.taskTitle,
+            tag: params.selectedTags,
+            list: 4,
+          },
+        }
+      );
+      const newTask = response.data;
+      this.itemsData.push(newTask);
+      this.getAllTags();
+      this.updateAllListNumbers();
+    } catch (error) {
+      console.error("Error creating task:", error);
+    }
   }
 
   getList(list: number): Item[] {
@@ -284,6 +346,7 @@ export default class Index extends Vue {
     }
 
     this.allTags = customSort(Object.keys(uniqueTags));
+    console.log(this.allTags);
   }
 
   created(): void {
