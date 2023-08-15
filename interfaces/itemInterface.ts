@@ -3,4 +3,5 @@ export interface Item {
   title: string;
   tag: string[];
   list: number;
+  position: number;
 }
