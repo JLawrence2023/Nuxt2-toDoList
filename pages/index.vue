@@ -161,7 +161,7 @@ export default class Index extends Vue {
     try {
       const response = await axios.get("http://127.0.0.1:8000/api/tasks");
       this.itemsData = response.data.tasks;
-      console.log(response);
+      console.log(this.itemsData);
     } catch (error) {
       console.error("Error fetching tasks:", error);
     }
@@ -169,7 +169,10 @@ export default class Index extends Vue {
     this.getAllTags();
   }
 
-  reorderTasks(sourceItemID: string, targetItemID: string): void {
+  async reorderTasks(
+    sourceItemID: string,
+    targetItemID: string
+  ): Promise<void> {
     const sourceIndex = this.itemsData.findIndex(
       (item) => item.id === Number(sourceItemID)
     );
@@ -178,11 +181,67 @@ export default class Index extends Vue {
     );
 
     if (sourceIndex !== -1 && targetIndex !== -1) {
-      this.itemsData.splice(
-        targetIndex,
-        0,
-        this.itemsData.splice(sourceIndex, 1)[0]
-      );
+      const sourceTask = this.itemsData[sourceIndex];
+      const targetTask = this.itemsData[targetIndex];
+
+      // Update the frontend UI first
+      this.itemsData.splice(sourceIndex, 1);
+      this.itemsData.splice(targetIndex, 0, sourceTask);
+
+      // Update the backend via API
+      axios
+        .put("http://127.0.0.1:8000/api/tasks/reorder", {
+          sourceItemId: sourceTask.id,
+          targetItemId: targetTask.id,
+        })
+        .then((response) => {
+          console.log(response.data.message);
+        })
+        .catch((error) => {
+          // Handle error if needed
+          console.error(error);
+          // Revert the frontend UI changes on error
+          this.itemsData.splice(targetIndex, 1);
+          this.itemsData.splice(sourceIndex, 0, sourceTask);
+        });
+    }
+  }
+
+  startDrag(event: DragEvent, item: Item): void {
+    console.log(item);
+    event.dataTransfer!.dropEffect = "move";
+    event.dataTransfer!.effectAllowed = "move";
+    event.dataTransfer!.setData("itemID", item.id.toString());
+  }
+
+  async onDrop(event: DragEvent, list: number): Promise<void> {
+    const itemID = event.dataTransfer!.getData("itemID");
+    const item = this.itemsData.find((item) => item.id === Number(itemID));
+    if (item) {
+      item.list = list;
+
+      axios
+        .put(`http://127.0.0.1:8000/api/task/${item.id}`, {
+          tasks: {
+            title: item.title,
+            tag: item.tag,
+            list: list,
+            position: item.position,
+          },
+        })
+        .then((response) => {
+          // console.log(response.data.message);
+          // console.log("Updated itemsData after card drop:", this.itemsData);
+        })
+        .catch((error) => {
+          console.error("Error updating task:", error);
+        });
+    }
+  }
+
+  dragOver(event: DragEvent, item: Item): void {
+    if (this.isFiltering) {
+      event.preventDefault();
     }
   }
 
@@ -293,33 +352,13 @@ export default class Index extends Vue {
     );
   }
 
-  startDrag(event: DragEvent, item: Item): void {
-    console.log(item);
-    event.dataTransfer!.dropEffect = "move";
-    event.dataTransfer!.effectAllowed = "move";
-    event.dataTransfer!.setData("itemID", item.id.toString());
-  }
-
-  onDrop(event: DragEvent, list: number): void {
-    const itemID = event.dataTransfer!.getData("itemID");
-    const item = this.itemsData.find((item) => item.id === Number(itemID));
-    if (item) {
-      item.list = list;
-    }
-  }
-
-  dragOver(event: DragEvent, item: Item): void {
-    if (this.isFiltering) {
-      event.preventDefault();
-    }
-  }
-
   submitModal(): void {
     this.itemsData.push({
       id: this.itemsData.length + 1,
       title: this.title,
       tag: this.selectedTags,
       list: 1,
+      position: this.itemsData.length + 1,
     });
 
     this.title = "";
